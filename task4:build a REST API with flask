@@ -1,0 +1,65 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# In-memory "database"
+users = {}
+
+# GET all users
+@app.route("/users", methods=["GET"])
+def get_users():
+    return jsonify(users), 200
+
+# GET a single user by ID
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_user(user_id):
+    user = users.get(user_id)
+    if user:
+        return jsonify({user_id: user}), 200
+    return jsonify({"error": "User not found"}), 404
+
+# POST - create a new user
+@app.route("/users", methods=["POST"])
+def create_user():
+    data = request.get_json()
+    if not data or "name" not in data:
+        return jsonify({"error": "Invalid input"}), 400
+    
+    user_id = len(users) + 1
+    users[user_id] = {"name": data["name"]}
+    return jsonify({"message": "User created", "id": user_id}), 201
+
+# PUT - update an existing user
+@app.route("/users/<int:user_id>", methods=["PUT"])
+def update_user(user_id):
+    data = request.get_json()
+    if user_id not in users:
+        return jsonify({"error": "User not found"}), 404
+    
+    users[user_id].update(data)
+    return jsonify({"message": "User updated", user_id: users[user_id]}), 200
+
+# DELETE - remove a user
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    if user_id not in users:
+        return jsonify({"error": "User not found
+
+
+***How It Works***
+GET /users → returns all users.
+
+GET /users/<id> → returns a specific user.
+
+POST /users → creates a new user (expects JSON like {"name": "Alice"}).
+
+PUT /users/<id> → updates an existing user (e.g., {"name": "Bob"}).
+
+DELETE /users/<id> → deletes a user.
+
+***Outcome***
+You’ve built a REST API with Flask that demonstrates CRUD operations.
+
+Data is stored in an in-memory dictionary, so it resets when the server restarts.
+
+This is the foundation of API development fundamentals.
