@@ -1,0 +1,60 @@
+*Step 1: Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+*Step 2: Load CSV File
+# Replace 'sales.csv' with your actual file path
+df = pd.read_csv("sales.csv")
+# Quick look at the data
+print(df.head())
+print(df.info())
+
+*Step 3: Basic Aggregations with groupby() + sum()
+Let’s assume your CSV has columns like: Date, Product, Region, Sales.
+# Total sales by product
+sales_by_product = df.groupby("Product")["Sales"].sum().reset_index()
+print(sales_by_product)
+
+# Total sales by region
+sales_by_region = df.groupby("Region")["Sales"].sum().reset_index()
+print(sales_by_region)
+
+# Monthly sales trend (if Date column exists)
+df["Date"] = pd.to_datetime(df["Date"])
+monthly_sales = df.groupby(df["Date"].dt.to_period("M"))["Sales"].sum().reset_index()
+monthly_sales["Date"] = monthly_sales["Date"].astype(str)
+print(monthly_sales)
+
+*Step 4: Visualizations with plot()
+python
+# Sales by product (bar chart)
+sales_by_product.plot(x="Product", y="Sales", kind="bar", legend=False)
+plt.title("Total Sales by Product")
+plt.ylabel("Sales")
+plt.show()
+# Sales by region (pie chart)
+sales_by_region.set_index("Region").plot(kind="pie", y="Sales", autopct='%1.1f%%')
+plt.title("Sales Distribution by Region")
+plt.ylabel("")
+plt.show()
+# Monthly sales trend (line chart)
+monthly_sales.plot(x="Date", y="Sales", kind="line", marker="o")
+plt.title("Monthly Sales Trend")
+plt.ylabel("Sales")
+plt.xticks(rotation=45)
+plt.show()
+
+***Outcome***
+You’ve loaded a CSV with pandas.
+Used groupby() + sum() to aggregate sales.
+Built charts (bar, pie, line) to visualize insights.
+Delivered results in a Jupyter Notebook format.
+
+***This gives you basic data insights:***
+Which products sell the most
+Which regions contribute the most
+How sales trend over time
+Which products sell the most
+Which regions contribute the most
+
+How sales trend over time
