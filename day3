@@ -1,0 +1,52 @@
+import requests
+from bs4 import BeautifulSoup
+
+# Step 1: Choose a public news website (example: BBC News front page)
+url = "https://www.bbc.com/news"
+
+# Step 2: Fetch the HTML content
+response = requests.get(url)
+if response.status_code != 200:
+    print("Failed to retrieve the webpage")
+    exit()
+
+# Step 3: Parse the HTML with BeautifulSoup
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Step 4: Extract headlines (looking for <h2> and <title> tags)
+headlines = []
+
+# Collect <h2> tags
+for h2 in soup.find_all("h2"):
+    text = h2.get_text(strip=True)
+    if text:
+        headlines.append(text)
+
+# Collect <title> tag (usually the page title)
+title_tag = soup.find("title")
+if title_tag:
+    headlines.append(title_tag.get_text(strip=True))
+
+# Step 5: Save the headlines to a .txt file
+with open("headlines.txt", "w", encoding="utf-8") as f:
+    for line in headlines:
+        f.write(line + "\n")
+
+print(f"✅ Scraped {len(headlines)} headlines and saved them to headlines.txt")
+
+
+***How it works***
+requests.get(url) → downloads the HTML of the news site.
+
+BeautifulSoup → parses the HTML into a searchable tree.
+
+find_all("h2") → grabs all <h2> tags (common for headlines).
+
+find("title") → grabs the page’s <title> tag.
+
+Write to file → saves everything into headlines.txt.
+
+***Outcome***
+You now have an automated data collection pipeline that scrapes top news headlines from a public website and stores them locally.
+
+You can schedule this script with cron (Linux/Mac) or Task Scheduler (Windows) to run daily and keep your headlines updated automatically.
