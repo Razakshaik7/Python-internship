@@ -1,0 +1,29 @@
+def chatbot():
+    print("Hello! I'm a simple chatbot. Type 'bye' to exit.")
+    while True:
+        user_input = input("You: ").lower()
+        # Exit condition
+        if user_input == "bye":
+            print("Chatbot: Goodbye! Have a great day!")
+            break
+        # Rule-based responses
+        elif "hello" in user_input or "hi" in user_input:
+            print("Chatbot: Hi there! How can I help you today?")
+        elif "how are you" in user_input:
+            print("Chatbot: I'm just a bunch of code, but I'm doing great! Thanks for asking.")
+        elif "your name" in user_input:
+            print("Chatbot: I'm a simple rule-based chatbot built with Python.")
+        elif "help" in user_input:
+            print("Chatbot: Sure! You can ask me about my name, how I am, or just say hello.")
+        else:
+            print("Chatbot: Sorry, I don't understand that yet.")
+# Run the chatbot
+if __name__ == "__main__":
+    chatbot()
+
+
+***How it works***
+Loop (while True) → Keeps the chatbot running until the user types "bye".
+Input/Output → Takes user input and prints chatbot responses.
+If-Elif-Else → Matches user input against simple rules.
+Rule-based NLP → Very basic, but it shows how chatbots map input → response.
