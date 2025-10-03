@@ -1,0 +1,49 @@
+import os
+from PIL import Image
+def resize_and_convert_images(input_folder, output_folder, size=(800, 600), output_format="JPEG"):
+    """
+    Resizes and converts all images in a folder.
+    Parameters:
+        input_folder (str): Path to the folder containing images.
+        output_folder (str): Path to save resized images.
+        size (tuple): Desired size (width, height).
+        output_format (str): Format to save images ("JPEG", "PNG", etc.).
+    """
+    # Create output folder if it doesn't exist
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    # Loop through all files in the input folder
+    for filename in os.listdir(input_folder):
+        file_path = os.path.join(input_folder, filename)
+        # Only process files that are images
+        if filename.lower().endswith((".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff")):
+            try:
+                with Image.open(file_path) as img:
+                    # Resize image
+                    img_resized = img.resize(size)
+                    # Convert and save
+                    base_name = os.path.splitext(filename)[0]
+                    output_file = os.path.join(output_folder, f"{base_name}.{output_format.lower()}")
+                    img_resized.save(output_file, output_format)
+                    print(f"Processed: {filename} → {output_file}")
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+# Example usage
+if __name__ == "__main__":
+    input_folder = "input_images"   # folder with original images
+    output_folder = "output_images" # folder to save resized images
+    resize_and_convert_images(input_folder, output_folder, size=(500, 500), output_format="JPEG")
+
+
+***How it works***
+os.listdir() → Reads all files in the folder
+PIL.Image.open() → Opens each image
+resize(size) → Resizes to the given dimensions
+save() → Saves in the chosen format (JPEG, PNG, etc.)
+Batch automation → Loops through all images automatically
+
+
+***Example***
+Put your images in a folder called input_images
+Run the script
+Resized and converted images will appear in output_images
